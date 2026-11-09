@@ -2,6 +2,11 @@ const NUM_COLS =4;
 const NUM_ROWS = 4;
 
 
+let currentScore = 0;
+updateScore(currentScore);
+
+
+
 let gameBoard = document.querySelector('#game_board');
 
 //create a game board
@@ -16,10 +21,25 @@ gameBoard.append(row);
      cell.classList.add('hole');
      cell.setAttribute('id',cellId)
      row.append(cell);
+
+     cell.addEventListener('click',()=>{
+        if(cell.classList.contains('needs_whack'))
+        {
+            cell.classList.remove('needs_whack')
+            currentScore+=1;
+            updateScore(currentScore);
+        }
+        else 
+        {
+            currentScore-=1;
+            updateScore(currentScore)
+        }
+
+     })
     }
 } 
 
-
+//genrate mole every one second
 const moleInterval = setInterval(()=>{
     const element = document.querySelector('#'+getRandomId())
     element.classList.add('needs_whack')
@@ -28,6 +48,7 @@ const moleInterval = setInterval(()=>{
 },1000)
 
 
+//give us random cell ID
 function getRandomId()
 {
 const randomcol = getRandomNumber(NUM_COLS);
@@ -37,10 +58,20 @@ return 'Hole-'+randomcol+randomrow;
 }
 
 
-
+//give us random number from 0 to num-1
 function getRandomNumber(num)
 {
 return Math.floor(Math.random()*num)
+}
+
+
+
+function updateScore(currentScore)
+{
+    let score = document.querySelector('#score');
+
+    score.textContent = `Score : ${currentScore}`;
+
 }
 
 
